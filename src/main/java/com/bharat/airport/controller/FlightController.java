@@ -11,6 +11,8 @@ import com.bharat.airport.service.FlightService;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +80,7 @@ public class FlightController {
             new SeatAssignment(passengerRequest.getSeatNumber(), passengerRequest.getSeatClass());
       }
 
-      Passenger passenger = new Passenger(passengerRequest.getName(), seatAssignment);
+      Passenger passenger = new Passenger(UUID.randomUUID(),passengerRequest.getName(), seatAssignment);
       flightService.addPassengerToFlight(flightNumber, passenger);
 
       return ResponseEntity.ok("Passenger added successfully");
