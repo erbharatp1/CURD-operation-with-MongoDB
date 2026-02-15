@@ -6,13 +6,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>airport-domain-demo</artifactId>
+    <groupId>com.bharat.airport</groupId>
+    <artifactId>airport-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>airport-domain-demo</name>
-    <description>airport-domain-demo</description>
+    <name>airport-app</name>
     <url/>
     <licenses>
         <license/>

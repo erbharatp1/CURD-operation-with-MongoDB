@@ -1,0 +1,15 @@
+meta {
+  name: Get passengers
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8080/api/flight/BH365/passengers/e221ace9-957d-4ac8-9c47-beb8abce4476
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
