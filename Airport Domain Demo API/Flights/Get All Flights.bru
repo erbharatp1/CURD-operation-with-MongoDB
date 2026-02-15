@@ -1,0 +1,15 @@
+meta {
+  name: Get All Flights
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/flights
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Scenario 2: Add Business Class Passenger
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/flights/BA777/passengers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "James Bond",
+    "seatNumber": "1A",
+    "seatClass": "Business"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

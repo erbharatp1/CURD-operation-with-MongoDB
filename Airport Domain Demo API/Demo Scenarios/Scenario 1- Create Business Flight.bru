@@ -1,0 +1,29 @@
+meta {
+  name: Scenario 1: Create Business Flight
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/flights
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "flightNumber": "BA777",
+    "origin": "LHR",
+    "destination": "JFK",
+    "scheduledDeparture": "2024-12-26T08:00:00",
+    "scheduledArrival": "2024-12-26T15:00:00"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

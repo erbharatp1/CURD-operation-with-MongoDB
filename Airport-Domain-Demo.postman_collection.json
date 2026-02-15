@@ -1,0 +1,243 @@
+{
+  "info": {
+    "name": "Airport Domain Demo API",
+    "description": "Collection for testing the Airport Domain Demo DDD application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Flights",
+      "item": [
+        {
+          "name": "Create Flight",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flightNumber\": \"DL456\",\n  \"origin\": \"ATL\",\n  \"destination\": \"SEA\",\n  \"scheduledDeparture\": \"2024-12-25T14:00:00\",\n  \"scheduledArrival\": \"2024-12-25T17:00:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights"]
+            }
+          }
+        },
+        {
+          "name": "Get All Flights",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/flights",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights"]
+            }
+          }
+        },
+        {
+          "name": "Get Flight by Number",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/UA101",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "UA101"]
+            }
+          }
+        },
+        {
+          "name": "Get Flights by Route",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/route?origin=JFK&destination=LAX",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "route"],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "JFK"
+                },
+                {
+                  "key": "destination",
+                  "value": "LAX"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Flight",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/DL456",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "DL456"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Passengers",
+      "item": [
+        {
+          "name": "Add Passenger to Flight",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Emma Watson\",\n  \"seatNumber\": \"14A\",\n  \"seatClass\": \"Economy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/UA101/passengers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "UA101", "passengers"]
+            }
+          }
+        },
+        {
+          "name": "Add Passenger without Seat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tom Hanks\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/UA101/passengers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "UA101", "passengers"]
+            }
+          }
+        },
+        {
+          "name": "Add Passenger - Duplicate Seat (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Will Smith\",\n  \"seatNumber\": \"12A\",\n  \"seatClass\": \"Economy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/UA101/passengers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "UA101", "passengers"]
+            }
+          }
+        },
+        {
+          "name": "Remove Passenger from Flight",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/UA101/passengers/{{passengerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "UA101", "passengers", "{{passengerId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Scenarios",
+      "item": [
+        {
+          "name": "Scenario 1: Create Business Flight",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flightNumber\": \"BA777\",\n  \"origin\": \"LHR\",\n  \"destination\": \"JFK\",\n  \"scheduledDeparture\": \"2024-12-26T08:00:00\",\n  \"scheduledArrival\": \"2024-12-26T15:00:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights"]
+            }
+          }
+        },
+        {
+          "name": "Scenario 2: Add Business Class Passenger",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"James Bond\",\n  \"seatNumber\": \"1A\",\n  \"seatClass\": \"Business\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/BA777/passengers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "BA777", "passengers"]
+            }
+          }
+        },
+        {
+          "name": "Scenario 3: Add First Class Passenger",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sherlock Holmes\",\n  \"seatNumber\": \"1F\",\n  \"seatClass\": \"First\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/flights/BA777/passengers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "flights", "BA777", "passengers"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}

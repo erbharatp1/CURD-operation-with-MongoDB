@@ -1,0 +1,25 @@
+meta {
+  name: Add Passenger without Seat
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/flights/UA101/passengers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Tom Hanks"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

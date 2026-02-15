@@ -1,0 +1,15 @@
+meta {
+  name: Delete Flight
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/flights/DL456
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

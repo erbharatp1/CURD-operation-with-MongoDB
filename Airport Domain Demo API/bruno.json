@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Airport Domain Demo API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Scenario 3: Add First Class Passenger
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/flights/BA777/passengers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Sherlock Holmes",
+    "seatNumber": "1F",
+    "seatClass": "First"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

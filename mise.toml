@@ -1,0 +1,17 @@
+[tools]
+java = "temurin-17"
+
+[tasks.build]
+run = "./mvnw clean install"
+
+[tasks.spotless-check]
+description = "Fails if the code is not formatted correctly."
+run = "./mvnw spotless:check"
+
+[tasks.lint]
+description = "Automatically formats the code according to the defined rules."
+run = "./mvnw spotless:apply"
+
+[tasks.start-mongo]
+description = "Starts the MongoDB Docker container if it is not already running."
+run = "bash ./scripts/start-mongo.sh"

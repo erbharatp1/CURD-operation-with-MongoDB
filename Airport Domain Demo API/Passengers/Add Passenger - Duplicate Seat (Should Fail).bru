@@ -1,0 +1,27 @@
+meta {
+  name: Add Passenger - Duplicate Seat (Should Fail)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/flights/UA101/passengers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Will Smith",
+    "seatNumber": "12A",
+    "seatClass": "Economy"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

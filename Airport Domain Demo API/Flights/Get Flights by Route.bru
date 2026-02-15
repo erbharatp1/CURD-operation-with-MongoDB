@@ -1,0 +1,20 @@
+meta {
+  name: Get Flights by Route
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/flights/route?origin=JFK&destination=LAX
+  body: none
+  auth: inherit
+}
+
+params:query {
+  origin: JFK
+  destination: LAX
+}
+
+settings {
+  encodeUrl: true
+}

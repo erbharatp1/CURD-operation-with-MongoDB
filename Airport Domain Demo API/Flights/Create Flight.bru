@@ -1,0 +1,30 @@
+meta {
+  name: Create Flight
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/flights
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "flightNumber": "BH3651",
+    "origin": "IND",
+    "destination": "STA",
+    "scheduledDeparture": "2024-12-25T14:00:00",
+    "scheduledArrival": "2024-12-25T17:00:00"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

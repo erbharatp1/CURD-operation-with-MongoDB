@@ -1,0 +1,27 @@
+meta {
+  name: Add Passenger to Flight
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/flights/UA101/passengers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Emma Watson",
+    "seatNumber": "14A",
+    "seatClass": "Economy"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

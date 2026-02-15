@@ -1,0 +1,15 @@
+meta {
+  name: Remove Passenger from Flight
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/flights/UA101/passengers/{{passengerId}}
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
