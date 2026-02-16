@@ -1,5 +1,5 @@
 package com.bharat.airport.domain.repository;
-  
+
 import com.bharat.airport.domain.model.Passenger;
 import java.util.List;
 import java.util.Optional;

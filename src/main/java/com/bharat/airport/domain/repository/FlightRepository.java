@@ -1,5 +1,5 @@
 package com.bharat.airport.domain.repository;
-  
+
 import com.bharat.airport.domain.model.Flight;
 import java.time.LocalDateTime;
 import java.util.List;

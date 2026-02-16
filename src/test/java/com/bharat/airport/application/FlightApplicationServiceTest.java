@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import com.bharat.airport.application.dto.FlightRequest;
 import com.bharat.airport.application.dto.PassengerRequest;
-import com.bharat.airport.domain.factory.FlightFactory;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.model.SeetClass;
@@ -26,7 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class FlightApplicationServiceTest {
 
   @Mock private FlightService flightService;
-  @Mock private FlightFactory flightFactory;
   @Mock private FlightRepository flightRepository;
 
   @InjectMocks private FlightApplicationService applicationService;
@@ -35,13 +33,20 @@ class FlightApplicationServiceTest {
 
   @BeforeEach
   void setUp() {
-    flight = new Flight("AB123", "JFK", "LAX", LocalDateTime.now().plusHours(2), LocalDateTime.now().plusHours(4));
+    flight =
+        new Flight(
+            "AB123",
+            "JFK",
+            "LAX",
+            LocalDateTime.now().plusHours(2),
+            LocalDateTime.now().plusHours(4));
   }
 
   @Test
   void shouldCreateFlightWhenRequested() {
-    FlightRequest request = new FlightRequest("AB123", "JFK", "LAX", flight.getScheduledDeparture(), flight.getScheduledArrival());
-    when(flightFactory.createFlight(any(), any(), any(), any(), any())).thenReturn(flight);
+    FlightRequest request =
+        new FlightRequest(
+            "AB123", "JFK", "LAX", flight.getScheduledDeparture(), flight.getScheduledArrival());
     when(flightRepository.save(any())).thenReturn(flight);
 
     Flight result = applicationService.createFlight(request);
@@ -103,5 +108,22 @@ class FlightApplicationServiceTest {
     when(flightService.flightExists("INVALID")).thenReturn(false);
 
     assertThrows(IllegalArgumentException.class, () -> applicationService.deleteFlight("INVALID"));
+  }
+
+  @Test
+  void shouldFindFlightsByRoute() {
+    when(flightService.findFlightsByRoute("O", "D")).thenReturn(Collections.singletonList(flight));
+    List<Flight> result = applicationService.findFlightsByRoute("O", "D");
+    assertEquals(1, result.size());
+  }
+
+  @Test
+  void shouldFindFlightsByDepartureRange() {
+    LocalDateTime start = LocalDateTime.now();
+    LocalDateTime end = LocalDateTime.now().plusDays(1);
+    when(flightService.findFlightsByDepartureRange(start, end))
+        .thenReturn(Collections.singletonList(flight));
+    List<Flight> result = applicationService.findFlightsByDepartureRange(start, end);
+    assertEquals(1, result.size());
   }
 }

@@ -7,7 +7,6 @@ import com.bharat.airport.domain.model.Flight;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +23,9 @@ public class FlightController {
 
   /** Create a new flight */
   @PostMapping
-  public ResponseEntity<?> createFlight(@Valid @RequestBody FlightRequest flightRequest) {
-    try {
-      Flight savedFlight = flightApplicationService.createFlight(flightRequest);
-      return ResponseEntity.status(HttpStatus.CREATED).body(savedFlight);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+  public ResponseEntity<Flight> createFlight(@Valid @RequestBody FlightRequest flightRequest) {
+    Flight savedFlight = flightApplicationService.createFlight(flightRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedFlight);
   }
 
   /** Get all flights */
@@ -43,39 +38,27 @@ public class FlightController {
   /** Get flight by flight number */
   @GetMapping("/{flightNumber}")
   public ResponseEntity<Flight> getFlight(@PathVariable String flightNumber) {
-    try {
-      Flight flight = flightApplicationService.getFlight(flightNumber);
-      return ResponseEntity.ok(flight);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.notFound().build();
-    }
+    Flight flight = flightApplicationService.getFlight(flightNumber);
+    return ResponseEntity.ok(flight);
   }
 
   /** Add passenger to flight */
   @PostMapping("/{flightNumber}/passengers")
   public ResponseEntity<String> addPassenger(
       @PathVariable String flightNumber, @Valid @RequestBody PassengerRequest passengerRequest) {
-    try {
-      flightApplicationService.addPassenger(flightNumber, passengerRequest);
-      return ResponseEntity.ok("Passenger added successfully");
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
+    flightApplicationService.addPassenger(flightNumber, passengerRequest);
+    return ResponseEntity.ok("Passenger added successfully");
   }
 
   /** Remove passenger from flight */
   @DeleteMapping("/{flightNumber}/passengers/{passengerId}")
   public ResponseEntity<String> removePassenger(
       @PathVariable String flightNumber, @PathVariable String passengerId) {
-    try {
-      boolean removed = flightApplicationService.removePassenger(flightNumber, passengerId);
-      if (removed) {
-        return ResponseEntity.ok("Passenger removed successfully");
-      } else {
-        return ResponseEntity.notFound().build();
-      }
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().body(e.getMessage());
+    boolean removed = flightApplicationService.removePassenger(flightNumber, passengerId);
+    if (removed) {
+      return ResponseEntity.ok("Passenger removed successfully");
+    } else {
+      return ResponseEntity.notFound().build();
     }
   }
 
@@ -98,11 +81,7 @@ public class FlightController {
   /** Delete flight */
   @DeleteMapping("/{flightNumber}")
   public ResponseEntity<String> deleteFlight(@PathVariable String flightNumber) {
-    try {
-      flightApplicationService.deleteFlight(flightNumber);
-      return ResponseEntity.ok("Flight deleted successfully");
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.notFound().build();
-    }
+    flightApplicationService.deleteFlight(flightNumber);
+    return ResponseEntity.ok("Flight deleted successfully");
   }
 }

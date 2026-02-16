@@ -95,7 +95,8 @@ class FlightServiceTest {
   void shouldReturnFalseWhenRemovingNonExistentPassengerFromFlight() {
     when(flightRepository.findByFlightNumber("AB123")).thenReturn(Optional.of(flight));
 
-    boolean removed = flightService.removePassengerFromFlight("AB123", UUID.randomUUID().toString());
+    boolean removed =
+        flightService.removePassengerFromFlight("AB123", UUID.randomUUID().toString());
 
     assertFalse(removed);
     verify(flightRepository, never()).save(any());

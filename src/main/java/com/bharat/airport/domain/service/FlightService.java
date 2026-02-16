@@ -1,5 +1,5 @@
 package com.bharat.airport.domain.service;
-  
+
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.repository.FlightRepository;

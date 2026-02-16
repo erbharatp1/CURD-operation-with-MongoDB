@@ -38,12 +38,24 @@ public class Flight {
       String destination,
       LocalDateTime scheduledDeparture,
       LocalDateTime scheduledArrival) {
+    validateTimes(scheduledDeparture, scheduledArrival);
     this.flightNumber = flightNumber;
     this.origin = origin;
     this.destination = destination;
     this.scheduledDeparture = scheduledDeparture;
     this.scheduledArrival = scheduledArrival;
     this.passengers = new ArrayList<>();
+  }
+
+  private void validateTimes(LocalDateTime departure, LocalDateTime arrival) {
+    if (departure != null && arrival != null) {
+      if (departure.isAfter(arrival)) {
+        throw new IllegalArgumentException("Departure time cannot be after arrival time");
+      }
+      if (departure.isBefore(LocalDateTime.now())) {
+        throw new IllegalArgumentException("Cannot schedule flight in the past");
+      }
+    }
   }
 
   /** Business method to add passenger with seat validation */

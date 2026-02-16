@@ -3,6 +3,8 @@ package com.bharat.airport.domain.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,5 +87,58 @@ class FlightTest {
   void shouldReturnFalseWhenRemovingNonExistentPassenger() {
     boolean removed = flight.removePassenger(UUID.randomUUID().toString());
     assertFalse(removed);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenDepartureTimeIsAfterArrivalTime() {
+    LocalDateTime dep = LocalDateTime.now().plusHours(5);
+    LocalDateTime arr = LocalDateTime.now().plusHours(3);
+    assertThrows(IllegalArgumentException.class, () -> new Flight("F1", "O", "D", dep, arr));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenDepartureTimeIsInPast() {
+    LocalDateTime dep = LocalDateTime.now().minusHours(1);
+    LocalDateTime arr = LocalDateTime.now().plusHours(1);
+    assertThrows(IllegalArgumentException.class, () -> new Flight("F1", "O", "D", dep, arr));
+  }
+
+  @Test
+  void shouldNotThrowExceptionWhenTimesAreNull() {
+    assertDoesNotThrow(() -> new Flight("F1", "O", "D", null, LocalDateTime.now()));
+    assertDoesNotThrow(() -> new Flight("F1", "O", "D", LocalDateTime.now(), null));
+  }
+
+  @Test
+  void shouldHandleNullPassengerIdWhenRemovingPassenger() {
+    assertFalse(flight.removePassenger(null));
+  }
+
+  @Test
+  void shouldSetAndGetFlightProperties() {
+    Flight f = new Flight();
+    f.setFlightNumber("FN123");
+    f.setOrigin("ORG");
+    f.setDestination("DST");
+    LocalDateTime dep = LocalDateTime.now().plusHours(1);
+    LocalDateTime arr = LocalDateTime.now().plusHours(2);
+    f.setScheduledDeparture(dep);
+    f.setScheduledArrival(arr);
+
+    assertEquals("FN123", f.getFlightNumber());
+    assertEquals("ORG", f.getOrigin());
+    assertEquals("DST", f.getDestination());
+    assertEquals(dep, f.getScheduledDeparture());
+    assertEquals(arr, f.getScheduledArrival());
+  }
+
+  @Test
+  void shouldSetAndGetPassengers() {
+    Flight f = new Flight();
+    List<Passenger> passengers = new ArrayList<>();
+    passengers.add(new Passenger("P1", null));
+    f.setPassengers(passengers);
+    assertEquals(1, f.getPassengers().size());
+    assertEquals("P1", f.getPassengers().get(0).getName());
   }
 }

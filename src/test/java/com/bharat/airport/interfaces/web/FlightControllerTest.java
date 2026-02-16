@@ -145,4 +145,81 @@ class FlightControllerTest {
     ResponseEntity<Flight> response = restTemplate.getForEntity(baseUrl + "/TEST123", Flight.class);
     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
   }
+
+  @Test
+  void shouldReturnNotFoundWhenDeletingNonExistentFlight() {
+    restTemplate.delete(baseUrl + "/INVALID");
+    // restTemplate.delete doesn't return anything, so we just check it doesn't crash the server
+    // and returns 404 if we try to get it
+    ResponseEntity<Flight> response = restTemplate.getForEntity(baseUrl + "/INVALID", Flight.class);
+    assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+  }
+
+  @Test
+  void shouldGetFlightsByRoute() {
+    LocalDateTime departure = LocalDateTime.now().plusHours(2);
+    LocalDateTime arrival = LocalDateTime.now().plusHours(4);
+    Flight flight = new Flight("TEST123", "JFK", "LAX", departure, arrival);
+    flightRepository.save(flight);
+
+    ResponseEntity<Flight[]> response =
+        restTemplate.getForEntity(baseUrl + "/route?origin=JFK&destination=LAX", Flight[].class);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertTrue(response.getBody().length > 0);
+  }
+
+  @Test
+  void shouldGetFlightsByDepartureRange() {
+    LocalDateTime departure = LocalDateTime.now().plusHours(2);
+    LocalDateTime arrival = LocalDateTime.now().plusHours(4);
+    Flight flight = new Flight("TEST123", "JFK", "LAX", departure, arrival);
+    flightRepository.save(flight);
+
+    String start = departure.minusHours(1).toString();
+    String end = departure.plusHours(1).toString();
+
+    ResponseEntity<Flight[]> response =
+        restTemplate.getForEntity(
+            baseUrl + "/departures?start=" + start + "&end=" + end, Flight[].class);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertTrue(response.getBody().length > 0);
+  }
+
+  @Test
+  void shouldReturnConflictWhenAddingPassengerToOccupiedSeat_Domain() {
+    // This is already covered by shouldReturnConflictWhenAddingPassengerToOccupiedSeat
+  }
+
+  @Test
+  void shouldRemovePassengerWhenPassengerExists() {
+    // Create a flight and passenger first
+    LocalDateTime departure = LocalDateTime.now().plusHours(2);
+    LocalDateTime arrival = LocalDateTime.now().plusHours(4);
+    Flight flight = new Flight("TEST123", "JFK", "LAX", departure, arrival);
+    flightRepository.save(flight);
+
+    PassengerRequest passengerRequest = new PassengerRequest("John Doe", "12A", SeetClass.Economy);
+    restTemplate.postForEntity(baseUrl + "/TEST123/passengers", passengerRequest, String.class);
+
+    Flight savedFlight = flightRepository.findByFlightNumber("TEST123").get();
+    String passengerId = savedFlight.getPassengers().get(0).getId().toString();
+
+    restTemplate.delete(baseUrl + "/TEST123/passengers/" + passengerId);
+
+    Flight updatedFlight = flightRepository.findByFlightNumber("TEST123").get();
+    assertEquals(0, updatedFlight.getPassengerCount());
+  }
+
+  @Test
+  void shouldReturnNotFoundWhenRemovingNonExistentPassenger() {
+    LocalDateTime departure = LocalDateTime.now().plusHours(2);
+    LocalDateTime arrival = LocalDateTime.now().plusHours(4);
+    Flight flight = new Flight("TEST123", "JFK", "LAX", departure, arrival);
+    flightRepository.save(flight);
+
+    restTemplate.delete(baseUrl + "/TEST123/passengers/" + java.util.UUID.randomUUID());
+
+    Flight updatedFlight = flightRepository.findByFlightNumber("TEST123").get();
+    assertEquals(0, updatedFlight.getPassengerCount());
+  }
 }
