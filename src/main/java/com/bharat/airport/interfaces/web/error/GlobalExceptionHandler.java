@@ -1,5 +1,6 @@
 package com.bharat.airport.interfaces.web.error;
 
+import com.bharat.airport.config.ExcludeFromJacocoGeneratedReport;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+@ExcludeFromJacocoGeneratedReport
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
