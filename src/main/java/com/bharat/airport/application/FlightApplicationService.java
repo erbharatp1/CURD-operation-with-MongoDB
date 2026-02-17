@@ -10,11 +10,13 @@ import com.bharat.airport.domain.service.FlightService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@Slf4j
 public class FlightApplicationService {
 
   private final FlightService flightService;
@@ -54,6 +56,7 @@ public class FlightApplicationService {
     Passenger passenger =
         new Passenger(UUID.randomUUID(), passengerRequest.getName(), seatAssignment);
     flightService.addPassengerToFlight(flightNumber, passenger);
+    log.info("Passenger added successfully");
   }
 
   public boolean removePassenger(String flightNumber, String passengerId) {
@@ -71,7 +74,9 @@ public class FlightApplicationService {
   public void deleteFlight(String flightNumber) {
     if (flightService.flightExists(flightNumber)) {
       flightRepository.deleteById(flightNumber);
+      log.info("Flight deleted successfully");
     } else {
+      log.error("Flight not found");
       throw new IllegalArgumentException("Flight not found: " + flightNumber);
     }
   }
