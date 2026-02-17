@@ -99,7 +99,7 @@ class FlightIntegrationTest {
     assertThat(createdFlight.getFlightNumber()).isEqualTo("UA87");
     assertThat(createdFlight.getPassengers()).isEmpty();
 
-    assertThat(flightRepository.findById("sax")).isPresent();
+    assertThat(flightRepository.findById("UA87")).isPresent();
   }
 
   @Test
