@@ -6,11 +6,9 @@ This project is a simple demonstration of a Spring Boot application using Domain
 
 ### Prerequisites
 
-- Java 17+
-- Maven 3.6+
-- Docker and Docker Compose
+- [mise](https://mise.jdx.dev/)
 
-### Running the Application
+### Setup and Installation
 
 1.  **Clone the repository:**
     ```bash
@@ -18,17 +16,28 @@ This project is a simple demonstration of a Spring Boot application using Domain
     cd CURD-operation-with-MongoDB
     ```
 
-2.  **Start the MongoDB container:**
+2.  **Install project-specific tools:**
+    This command will use `mise` to install the correct versions of Java, Maven, and MongoDB as defined in the `.mise.toml` file.
     ```bash
-    mise run start-mongo
+    mise run setup
     ```
 
-3.  **Run the application:**
+### Running the Application
+
+1.  **Start the MongoDB database:**
+    This command will start MongoDB as a background process.
+    ```bash
+    mise run start-db
+    ```
+
+2.  **Run the application:**
     ```bash
     ./mvnw spring-boot:run
     ```
 
 The application will be available at `http://localhost:8080`.
+
+To stop the database, run `mise run stop-db`.
 
 ## 📚 API Endpoints
 
@@ -60,8 +69,8 @@ The base URL for the API is `/api/flights`.
 
 ## 🧪 Running Tests
 
-To run the test suite, use the following command:
+To run the entire test suite, including integration tests, use the following `mise` command. The integration tests use a separate, containerized database that is managed automatically.
 
 ```bash
-./mvnw test
+mise run test
 ```

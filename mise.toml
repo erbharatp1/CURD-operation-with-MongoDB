@@ -1,20 +1,27 @@
 [tools]
 java = "temurin-17"
+maven = "latest"
+mongodb = "latest"
+
+[tasks.setup]
+description = "Installs the required tools (Java, Maven, MongoDB) using mise."
+run = "mise install"
 
 [tasks.build]
 run = "./mvnw clean install"
 
-[tasks.spotless-check]
-description = "Fails if the code is not formatted correctly."
-run = "./mvnw spotless:check"
+[tasks.start-db]
+description = "Starts the MongoDB database as a background process."
+run = "mongod --dbpath ./data/db --logpath ./data/log/mongo.log --fork"
+
+[tasks.stop-db]
+description = "Stops the MongoDB database."
+run = "mongod --dbpath ./data/db --shutdown"
+
+[tasks.test]
+description = "Runs the integration tests (uses a separate test database)."
+run = "./mvnw test"
 
 [tasks.lint]
 description = "Automatically formats the code according to the defined rules."
 run = "./mvnw spotless:apply"
-
-[tasks.start-mongo]
-description = "Starts the MongoDB Docker container if it is not already running."
-run = "bash ./scripts/start-mongo.sh"
-
-[tasks.verify]
-run = "./mvnw verify"
