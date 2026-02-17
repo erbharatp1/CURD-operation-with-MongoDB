@@ -30,7 +30,13 @@ jobs:
       run: ./mvnw spotless:check
 
     - name: Set up Docker permissions
-      run: sudo chmod 666 /var/run/docker.sock
+      run: |
+        sudo chmod 666 /var/run/docker.sock
+        echo "DOCKER_HOST=unix:///var/run/docker.sock" >> $GITHUB_ENV
+        echo "TESTCONTAINERS_RYUK_DISABLED=true" >> $GITHUB_ENV
+
+    - name: Pull MongoDB image
+      run: docker pull mongo:6.0
 
     - name: Build and Test with Coverage
       run: ./mvnw -B verify jacoco:report
