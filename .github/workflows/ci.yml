@@ -19,12 +19,22 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Run Spotless Check
       run: ./mvnw spotless:check
+
     - name: Set up Docker permissions
       run: sudo chmod 666 /var/run/docker.sock
+
     - name: Build and Test with Coverage
       run: ./mvnw -B verify jacoco:report
+
     - name: Verify Coverage
       run: |
         COVERAGE=$(grep -o "instructions covered ratio is [0-9.]*" target/site/jacoco/index.html | awk '{print $NF*100}' || echo 0)
