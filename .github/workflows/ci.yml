@@ -21,6 +21,8 @@ jobs:
         cache: maven
     - name: Run Spotless Check
       run: ./mvnw spotless:check
+    - name: Set up Docker permissions
+      run: sudo chmod 666 /var/run/docker.sock
     - name: Build and Test with Coverage
       run: ./mvnw -B verify jacoco:report
     - name: Verify Coverage
