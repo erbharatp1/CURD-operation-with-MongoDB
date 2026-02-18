@@ -2,6 +2,11 @@
 
 This project is a simple demonstration of a Spring Boot application using Domain-Driven Design (DDD) principles to manage airport flights and passengers, with MongoDB as the database.
 
+## 🚀 Swagger UI
+Once the application is running, you can access the Swagger UI at:
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON**: `http://localhost:8080/v3/api-docs`
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -25,19 +30,16 @@ This project is a simple demonstration of a Spring Boot application using Domain
 ### Running the Application
 
 1.  **Start the MongoDB database:**
-    This command will start MongoDB as a background process.
+    This command will start MongoDB using Docker Compose.
     ```bash
-    mise run start-db
+    docker compose up -d
     ```
 
 2.  **Run the application:**
     ```bash
     ./mvnw spring-boot:run
     ```
-
-The application will be available at `http://localhost:8080`.
-
-To stop the database, run `mise run stop-db`.
+    *Note: If you have Docker installed, the application will automatically start MongoDB using `spring-boot-docker-compose` if it's not already running.*
 
 ## 📚 API Endpoints
 

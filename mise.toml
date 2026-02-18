@@ -11,17 +11,16 @@ run = "mise install"
 run = "./mvnw clean install"
 
 [tasks.start-db]
-description = "Starts the MongoDB database as a background process."
-run = "mongod --dbpath ./data/db --logpath ./data/log/mongo.log --fork"
+description = "Starts the MongoDB database as a background process using Docker Compose."
+run = "docker compose up -d"
 
 [tasks.stop-db]
 description = "Stops the MongoDB database."
-run = "mongod --dbpath ./data/db --shutdown"
+run = "docker compose down"
 
 [tasks.test]
 description = "Runs the integration tests (uses a separate test database)."
 run = "./mvnw test"
 
-[tasks.lint]
-description = "Automatically formats the code according to the defined rules."
-run = "./mvnw spotless:apply"
+[tasks.stop-rm-db]
+run ="docker stop some-mongo && docker rm some-mongo"
