@@ -1,0 +1,27 @@
+# MongoDB Configuration
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: airportdb
+      username: admin
+      password: admin
+      authentication-database: admin
+
+  # Docker Compose Configuration
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start_and_stop
+
+# Server Configuration
+server:
+  port: 8080
+
+# Logging
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    com.example.airport: DEBUG
+    org.springframework.web: DEBUG
