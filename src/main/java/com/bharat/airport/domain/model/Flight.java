@@ -1,5 +1,6 @@
 package com.bharat.airport.domain.model;
 
+import com.bharat.airport.domain.exception.SeatAlreadyAssignedException;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -69,8 +70,7 @@ public class Flight {
                           && p.getSeatAssignment().equals(passenger.getSeatAssignment()));
 
       if (seatTaken) {
-        throw new IllegalArgumentException(
-            "Seat " + passenger.getSeatAssignment().getSeatNumber() + " is already assigned");
+        throw new SeatAlreadyAssignedException(passenger.getSeatAssignment().getSeatNumber());
       }
     }
     this.passengers.add(passenger);

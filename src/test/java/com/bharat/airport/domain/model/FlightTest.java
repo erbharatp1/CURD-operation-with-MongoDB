@@ -2,6 +2,7 @@ package com.bharat.airport.domain.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.bharat.airport.domain.exception.SeatAlreadyAssignedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +61,9 @@ class FlightTest {
 
     flight.addPassenger(passenger1);
 
-    IllegalArgumentException exception =
+    SeatAlreadyAssignedException exception =
         assertThrows(
-            IllegalArgumentException.class,
+            SeatAlreadyAssignedException.class,
             () -> {
               flight.addPassenger(passenger2);
             });

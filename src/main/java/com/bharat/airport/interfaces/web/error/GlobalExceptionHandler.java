@@ -1,10 +1,13 @@
 package com.bharat.airport.interfaces.web.error;
 
 import com.bharat.airport.config.ExcludeFromJacocoGeneratedReport;
+import com.bharat.airport.domain.exception.AirportAlreadyExistsException;
+import com.bharat.airport.domain.exception.AirportNotFoundException;
+import com.bharat.airport.domain.exception.FlightNotFoundException;
+import com.bharat.airport.domain.exception.SeatAlreadyAssignedException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,24 +68,39 @@ public class GlobalExceptionHandler {
     return new ErrorResponse(errors);
   }
 
+  @ExceptionHandler(FlightNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ErrorResponse handleFlightNotFoundException(FlightNotFoundException ex) {
+    List<ErrorDetail> errors = List.of(new ErrorDetail("FLIGHT_NOT_FOUND", ex.getMessage()));
+    return new ErrorResponse(errors);
+  }
+
+  @ExceptionHandler(AirportNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ErrorResponse handleAirportNotFoundException(AirportNotFoundException ex) {
+    List<ErrorDetail> errors = List.of(new ErrorDetail("AIRPORT_NOT_FOUND", ex.getMessage()));
+    return new ErrorResponse(errors);
+  }
+
+  @ExceptionHandler(AirportAlreadyExistsException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public ErrorResponse handleAirportAlreadyExistsException(AirportAlreadyExistsException ex) {
+    List<ErrorDetail> errors = List.of(new ErrorDetail("AIRPORT_ALREADY_EXISTS", ex.getMessage()));
+    return new ErrorResponse(errors);
+  }
+
+  @ExceptionHandler(SeatAlreadyAssignedException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  public ErrorResponse handleSeatAlreadyAssignedException(SeatAlreadyAssignedException ex) {
+    List<ErrorDetail> errors = List.of(new ErrorDetail("SEAT_ALREADY_ASSIGNED", ex.getMessage()));
+    return new ErrorResponse(errors);
+  }
+
   @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-    HttpStatus status = HttpStatus.BAD_REQUEST;
-    String message = ex.getMessage();
-    String code = "INVALID_ARGUMENT";
-
-    if (message != null) {
-      if (message.contains("not found")) {
-        status = HttpStatus.NOT_FOUND;
-        code = "NOT_FOUND";
-      } else if (message.contains("already assigned")) {
-        status = HttpStatus.CONFLICT;
-        code = "ALREADY_ASSIGNED";
-      }
-    }
-
-    List<ErrorDetail> errors = List.of(new ErrorDetail(code, message));
-    return ResponseEntity.status(status).body(new ErrorResponse(errors));
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleIllegalArgumentException(IllegalArgumentException ex) {
+    List<ErrorDetail> errors = List.of(new ErrorDetail("INVALID_ARGUMENT", ex.getMessage()));
+    return new ErrorResponse(errors);
   }
 
   @ExceptionHandler(MissingServletRequestPartException.class)

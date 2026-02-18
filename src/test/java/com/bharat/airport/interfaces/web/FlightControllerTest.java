@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.bharat.airport.application.FlightApplicationService;
 import com.bharat.airport.application.dto.FlightRequest;
 import com.bharat.airport.application.dto.PassengerRequest;
+import com.bharat.airport.domain.exception.FlightNotFoundException;
+import com.bharat.airport.domain.exception.SeatAlreadyAssignedException;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.SeetClass;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,7 +84,7 @@ class FlightControllerTest {
   @Test
   void shouldReturnNotFoundWhenFlightDoesNotExist() throws Exception {
     when(flightApplicationService.getFlight("INVALID"))
-        .thenThrow(new IllegalArgumentException("Flight not found: INVALID"));
+        .thenThrow(new FlightNotFoundException("INVALID"));
 
     mockMvc.perform(get("/api/flights/INVALID")).andExpect(status().isNotFound());
   }
@@ -108,7 +110,7 @@ class FlightControllerTest {
   void shouldReturnConflictWhenAddingPassengerToOccupiedSeat() throws Exception {
     PassengerRequest passengerRequest = new PassengerRequest("John Doe", "12A", SeetClass.Economy);
 
-    doThrow(new IllegalArgumentException("Seat 12A is already assigned"))
+    doThrow(new SeatAlreadyAssignedException("12A"))
         .when(flightApplicationService)
         .addPassenger(eq("TEST123"), any(PassengerRequest.class));
 
@@ -132,7 +134,7 @@ class FlightControllerTest {
 
   @Test
   void shouldReturnNotFoundWhenDeletingNonExistentFlight() throws Exception {
-    doThrow(new IllegalArgumentException("Flight not found: INVALID"))
+    doThrow(new FlightNotFoundException("INVALID"))
         .when(flightApplicationService)
         .deleteFlight("INVALID");
 

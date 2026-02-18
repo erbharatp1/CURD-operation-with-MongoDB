@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import com.bharat.airport.domain.exception.FlightNotFoundException;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.model.SeatAssignment;
@@ -55,9 +56,9 @@ class FlightServiceTest {
   void shouldThrowExceptionWhenAddingPassengerToNonExistentFlight() {
     when(flightRepository.findByFlightNumber("INVALID")).thenReturn(Optional.empty());
 
-    IllegalArgumentException exception =
+    FlightNotFoundException exception =
         assertThrows(
-            IllegalArgumentException.class,
+            FlightNotFoundException.class,
             () -> {
               flightService.addPassengerToFlight("INVALID", passenger);
             });

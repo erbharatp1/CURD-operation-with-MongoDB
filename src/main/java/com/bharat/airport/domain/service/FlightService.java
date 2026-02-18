@@ -1,5 +1,6 @@
 package com.bharat.airport.domain.service;
 
+import com.bharat.airport.domain.exception.FlightNotFoundException;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.repository.FlightRepository;
@@ -27,7 +28,7 @@ public class FlightService {
     Flight flight =
         flightRepository
             .findByFlightNumber(flightNumber)
-            .orElseThrow(() -> new IllegalArgumentException("Flight not found: " + flightNumber));
+            .orElseThrow(() -> new FlightNotFoundException(flightNumber));
 
     // Domain logic: validate seat assignment
     flight.addPassenger(passenger);
@@ -39,7 +40,7 @@ public class FlightService {
     Flight flight =
         flightRepository
             .findByFlightNumber(flightNumber)
-            .orElseThrow(() -> new IllegalArgumentException("Flight not found: " + flightNumber));
+            .orElseThrow(() -> new FlightNotFoundException(flightNumber));
 
     boolean removed = flight.removePassenger(passengerId);
     if (removed) {
@@ -53,7 +54,7 @@ public class FlightService {
   public Flight getFlightWithPassengers(String flightNumber) {
     return flightRepository
         .findByFlightNumber(flightNumber)
-        .orElseThrow(() -> new IllegalArgumentException("Flight not found: " + flightNumber));
+        .orElseThrow(() -> new FlightNotFoundException(flightNumber));
   }
 
   /** Find flights by route */

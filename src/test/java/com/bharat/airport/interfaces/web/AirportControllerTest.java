@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.bharat.airport.application.AirportApplicationService;
 import com.bharat.airport.application.dto.AirportRequest;
+import com.bharat.airport.domain.exception.AirportNotFoundException;
 import com.bharat.airport.domain.model.Airport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -58,7 +59,7 @@ class AirportControllerTest {
   @Test
   void shouldReturnNotFoundWhenAirportDoesNotExist() throws Exception {
     when(airportApplicationService.getAirport("INVALID"))
-        .thenThrow(new IllegalArgumentException("Airport not found: INVALID"));
+        .thenThrow(new AirportNotFoundException("INVALID"));
 
     mockMvc.perform(get("/api/airports/INVALID")).andExpect(status().isNotFound());
   }

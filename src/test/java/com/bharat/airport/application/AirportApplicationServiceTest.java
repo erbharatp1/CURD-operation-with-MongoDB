@@ -5,6 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.bharat.airport.application.dto.AirportRequest;
+import com.bharat.airport.domain.exception.AirportAlreadyExistsException;
+import com.bharat.airport.domain.exception.AirportNotFoundException;
 import com.bharat.airport.domain.model.Airport;
 import com.bharat.airport.domain.repository.AirportRepository;
 import java.util.Collections;
@@ -56,7 +58,8 @@ class AirportApplicationServiceTest {
         new AirportRequest("JFK", "John F. Kennedy International Airport", true);
     when(airportRepository.existsById("JFK")).thenReturn(true);
 
-    assertThrows(IllegalArgumentException.class, () -> applicationService.registerAirport(request));
+    assertThrows(
+        AirportAlreadyExistsException.class, () -> applicationService.registerAirport(request));
   }
 
   @Test
@@ -73,7 +76,7 @@ class AirportApplicationServiceTest {
   void shouldThrowExceptionWhenGettingNonExistentAirport() {
     when(airportRepository.findById("INVALID")).thenReturn(Optional.empty());
 
-    assertThrows(IllegalArgumentException.class, () -> applicationService.getAirport("INVALID"));
+    assertThrows(AirportNotFoundException.class, () -> applicationService.getAirport("INVALID"));
   }
 
   @Test
@@ -99,6 +102,6 @@ class AirportApplicationServiceTest {
   void shouldThrowExceptionWhenDeletingNonExistentAirport() {
     when(airportRepository.existsById("INVALID")).thenReturn(false);
 
-    assertThrows(IllegalArgumentException.class, () -> applicationService.deleteAirport("INVALID"));
+    assertThrows(AirportNotFoundException.class, () -> applicationService.deleteAirport("INVALID"));
   }
 }

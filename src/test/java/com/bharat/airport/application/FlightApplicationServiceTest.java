@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import com.bharat.airport.application.dto.FlightRequest;
 import com.bharat.airport.application.dto.PassengerRequest;
+import com.bharat.airport.domain.exception.FlightNotFoundException;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.model.SeetClass;
@@ -107,7 +108,7 @@ class FlightApplicationServiceTest {
   void shouldThrowExceptionWhenDeletingNonExistentFlight() {
     when(flightService.flightExists("INVALID")).thenReturn(false);
 
-    assertThrows(IllegalArgumentException.class, () -> applicationService.deleteFlight("INVALID"));
+    assertThrows(FlightNotFoundException.class, () -> applicationService.deleteFlight("INVALID"));
   }
 
   @Test

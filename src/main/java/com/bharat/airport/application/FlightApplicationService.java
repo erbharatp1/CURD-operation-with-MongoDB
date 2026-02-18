@@ -2,6 +2,7 @@ package com.bharat.airport.application;
 
 import com.bharat.airport.application.dto.FlightRequest;
 import com.bharat.airport.application.dto.PassengerRequest;
+import com.bharat.airport.domain.exception.FlightNotFoundException;
 import com.bharat.airport.domain.model.Flight;
 import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.model.SeatAssignment;
@@ -77,7 +78,7 @@ public class FlightApplicationService {
       log.info("Flight deleted successfully");
     } else {
       log.error("Flight not found");
-      throw new IllegalArgumentException("Flight not found: " + flightNumber);
+      throw new FlightNotFoundException(flightNumber);
     }
   }
 }
