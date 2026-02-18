@@ -6,6 +6,7 @@ import com.bharat.airport.domain.model.Passenger;
 import com.bharat.airport.domain.repository.FlightRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
+@Slf4j
 public class FlightService {
 
   private final FlightRepository flightRepository;
@@ -23,16 +25,16 @@ public class FlightService {
     this.flightRepository = flightRepository;
   }
 
-  /** Add passenger to flight with business validation */
   public void addPassengerToFlight(String flightNumber, Passenger passenger) {
+    log.info("Adding Passenger to Flight {}", flightNumber);
     Flight flight =
         flightRepository
             .findByFlightNumber(flightNumber)
             .orElseThrow(() -> new FlightNotFoundException(flightNumber));
 
-    // Domain logic: validate seat assignment
     flight.addPassenger(passenger);
     flightRepository.save(flight);
+    log.info("Added Passenger to Flight {}", flightNumber);
   }
 
   /** Remove passenger from flight */
@@ -49,7 +51,6 @@ public class FlightService {
     return removed;
   }
 
-  /** Get flight with passengers */
   @Transactional(readOnly = true)
   public Flight getFlightWithPassengers(String flightNumber) {
     return flightRepository
@@ -57,19 +58,16 @@ public class FlightService {
         .orElseThrow(() -> new FlightNotFoundException(flightNumber));
   }
 
-  /** Find flights by route */
   @Transactional(readOnly = true)
   public List<Flight> findFlightsByRoute(String origin, String destination) {
     return flightRepository.findByRoute(origin, destination);
   }
 
-  /** Find flights departing within time range */
   @Transactional(readOnly = true)
   public List<Flight> findFlightsByDepartureRange(LocalDateTime start, LocalDateTime end) {
     return flightRepository.findFlightsByDepartureTimeRange(start, end);
   }
 
-  /** Check if flight exists */
   @Transactional(readOnly = true)
   public boolean flightExists(String flightNumber) {
     return flightRepository.findByFlightNumber(flightNumber).isPresent();

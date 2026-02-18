@@ -6,10 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Document(collection = "flights")
 public class Flight {
   @Id
@@ -30,8 +35,6 @@ public class Flight {
   private LocalDateTime scheduledArrival;
 
   private List<Passenger> passengers = new ArrayList<>();
-
-  public Flight() {}
 
   public Flight(
       String flightNumber,
@@ -76,63 +79,8 @@ public class Flight {
     this.passengers.add(passenger);
   }
 
-  /** Business method to remove passenger */
   public boolean removePassenger(String passengerId) {
     if (passengerId == null) return false;
     return passengers.removeIf(p -> p.getId() != null && p.getId().toString().equals(passengerId));
-  }
-
-  /** Get passenger count */
-  public int getPassengerCount() {
-    return passengers.size();
-  }
-
-  // Getters and Setters
-  public String getFlightNumber() {
-    return flightNumber;
-  }
-
-  public void setFlightNumber(String flightNumber) {
-    this.flightNumber = flightNumber;
-  }
-
-  public String getOrigin() {
-    return origin;
-  }
-
-  public void setOrigin(String origin) {
-    this.origin = origin;
-  }
-
-  public String getDestination() {
-    return destination;
-  }
-
-  public void setDestination(String destination) {
-    this.destination = destination;
-  }
-
-  public LocalDateTime getScheduledDeparture() {
-    return scheduledDeparture;
-  }
-
-  public void setScheduledDeparture(LocalDateTime scheduledDeparture) {
-    this.scheduledDeparture = scheduledDeparture;
-  }
-
-  public LocalDateTime getScheduledArrival() {
-    return scheduledArrival;
-  }
-
-  public void setScheduledArrival(LocalDateTime scheduledArrival) {
-    this.scheduledArrival = scheduledArrival;
-  }
-
-  public List<Passenger> getPassengers() {
-    return passengers;
-  }
-
-  public void setPassengers(List<Passenger> passengers) {
-    this.passengers = passengers;
   }
 }

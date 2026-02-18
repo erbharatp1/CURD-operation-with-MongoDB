@@ -38,7 +38,7 @@ class FlightTest {
     Passenger passenger = new Passenger("John Doe", null);
     flight.addPassenger(passenger);
 
-    assertEquals(1, flight.getPassengerCount());
+    assertEquals(1, flight.getPassengers().size());
     assertTrue(flight.getPassengers().contains(passenger));
   }
 
@@ -49,7 +49,7 @@ class FlightTest {
 
     flight.addPassenger(passenger);
 
-    assertEquals(1, flight.getPassengerCount());
+    assertEquals(1, flight.getPassengers().size());
     assertEquals("12A", flight.getPassengers().get(0).getSeatAssignment().getSeatNumber());
   }
 
@@ -69,7 +69,7 @@ class FlightTest {
             });
 
     assertTrue(exception.getMessage().contains("Seat 12A is already assigned"));
-    assertEquals(1, flight.getPassengerCount());
+    assertEquals(1, flight.getPassengers().size());
   }
 
   @Test
@@ -81,7 +81,7 @@ class FlightTest {
     boolean removed = flight.removePassenger(id.toString());
 
     assertTrue(removed);
-    assertEquals(0, flight.getPassengerCount());
+    assertEquals(0, flight.getPassengers().size());
   }
 
   @Test

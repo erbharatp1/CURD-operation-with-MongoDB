@@ -10,6 +10,9 @@ run = "mise install"
 [tasks.build]
 run = "./mvnw clean install"
 
+[tasks.spotless]
+run = "mvn spotless:apply"
+
 [tasks.start-db]
 description = "Starts the MongoDB database as a background process using Docker Compose."
 run = "docker compose up -d"

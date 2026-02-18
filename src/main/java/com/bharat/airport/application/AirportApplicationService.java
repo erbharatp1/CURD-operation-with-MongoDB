@@ -27,6 +27,7 @@ public class AirportApplicationService {
   @CacheEvict(value = "airports", allEntries = true)
   public Airport registerAirport(AirportRequest airportRequest) {
     if (airportRepository.existsById(airportRequest.getCode())) {
+      log.error("Airport already exists with code {}", airportRequest.getCode());
       throw new AirportAlreadyExistsException(airportRequest.getCode());
     }
     Airport airport =
@@ -53,6 +54,7 @@ public class AirportApplicationService {
   @CacheEvict(value = "airports", allEntries = true)
   public void deleteAirport(String code) {
     if (!airportRepository.existsById(code)) {
+      log.error("Airport not found with code {}", code);
       throw new AirportNotFoundException(code);
     }
     airportRepository.deleteById(code);

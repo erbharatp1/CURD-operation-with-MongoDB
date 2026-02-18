@@ -48,7 +48,7 @@ class FlightServiceTest {
 
     flightService.addPassengerToFlight("AB123", passenger);
 
-    assertEquals(1, flight.getPassengerCount());
+    assertEquals(1, flight.getPassengers().size());
     verify(flightRepository).save(flight);
   }
 
@@ -88,7 +88,7 @@ class FlightServiceTest {
     boolean removed = flightService.removePassengerFromFlight("AB123", id.toString());
 
     assertTrue(removed);
-    assertEquals(0, flight.getPassengerCount());
+    assertEquals(0, flight.getPassengers().size());
     verify(flightRepository).save(flight);
   }
 
