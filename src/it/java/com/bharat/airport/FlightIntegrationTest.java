@@ -37,7 +37,7 @@ class FlightIntegrationTest {
 
   @Container
   @ServiceConnection
-  static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:6.0");
+  static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4");
 
   @Autowired private TestRestTemplate restTemplate;
 
